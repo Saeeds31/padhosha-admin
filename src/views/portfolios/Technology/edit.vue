@@ -96,6 +96,7 @@ const form = reactive({
   icon: null,
   meta_title: '',
   meta_description: '',
+  slug: '',
   description: '',
 })
 

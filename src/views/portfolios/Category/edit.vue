@@ -16,9 +16,15 @@
           </b-form-group>
         </b-col>
 
+        <b-col cols="12" md="6">
+          <b-form-group label="slug" label-for="slug">
+            <b-form-input id="slug" v-model="form.slug" />
+            <small v-if="errors.slug" class="text-danger">{{ errors.slug[0] }}</small>
+          </b-form-group>
+        </b-col>
 
         <!-- Icon -->
-        <b-col cols="12" md="6">
+        <b-col cols="12" md="12">
           <b-form-group label="آیکن" label-for="icon">
 
             <VueFileAgent @update:raw-model-value="imageLoaded1" :raw-model-value="oldImage1" :maxFiles="1"
@@ -89,6 +95,7 @@ let oldImage1 = ref([])
 const form = reactive({
   title: '',
   icon: null,
+  slug: '',
   meta_title: '',
   meta_description: '',
   description: '',

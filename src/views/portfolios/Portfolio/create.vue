@@ -46,7 +46,11 @@
           </div>
           <div class=" border-box">
 
-
+            <div class="col-md-12 mb-3">
+              <label class="form-label">slug</label>
+              <input v-model="form.slug" type="text" class="form-control" />
+              <span v-if="errors.slug" class="text-danger">{{ errors.slug[0] }}</span>
+            </div>
             <div class="col-md-12 mb-3">
               <label class="form-label">وضعیت</label>
               <select v-model="form.status" class="form-select">
@@ -59,7 +63,8 @@
 
             <div class="col-md-12 mb-3">
               <label class="form-label">تصویر اصلی</label>
-              <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable sortable />
+              <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable
+                sortable />
               <span v-if="errors.main_image" class="text-danger">{{ errors.main_image[0] }}</span>
             </div>
           </div>
@@ -113,7 +118,7 @@ function imagesLoaded(files) {
   form.value.images = files.map((file) => file.file)
 }
 const form = ref({
-  title: '', link: '', images: [], description: '', categories: [], technologies: [], main_image: "",
+  title: '', link: '', slug: '', images: [], description: '', categories: [], technologies: [], main_image: "",
   meta_title: '', meta_description: '', status: ''
 })
 const errors = ref({})
@@ -160,7 +165,7 @@ async function submitData() {
     toast.success('نمونه کار با موفقیت ذخیره شد!')
   } catch (e) {
     console.log(e);
-    if (e.response?.data?.errors) errors.value.step1 = e.response.data.errors
+    if (e.response?.data?.errors) errors.value = e.response.data.errors
     toast.error('خطا در ذخیره نمونه کار')
   } finally {
     loading.value = false;

@@ -19,8 +19,8 @@ import Vue3PersianDatetimePicker from "vue3-persian-datetime-picker";
 import "@boindil/vue-file-agent-next/dist/vue-file-agent-next.css";
 // api.padhosha.ir
 // 127.0.0.1:8000
-axios.defaults.baseURL = "http://127.0.0.1:8000/api/v1/admin";
-window.baseImageAddress = "http://127.0.0.1:8000/storage_public/";
+axios.defaults.baseURL = "http://api.padhosha.ir/api/v1/admin";
+window.baseImageAddress = "http://api.padhosha.ir/storage_public/";
 const app = createApp(App);
 // app.use(CKEditor)
 app.use(Vue3Toastify, {

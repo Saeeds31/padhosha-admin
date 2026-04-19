@@ -58,6 +58,11 @@
           <div class="border-box">
             <!-- وضعیت و تخفیف -->
             <div class="col-md-12 mb-3">
+              <label class="form-label">slug</label>
+              <input v-model="form.slug" type="text" class="form-control" />
+              <span v-if="errors.slug" class="text-danger">{{ errors.slug[0] }}</span>
+            </div>
+            <div class="col-md-12 mb-3">
               <label class="form-label">وضعیت</label>
               <select v-model="form.status" class="form-select">
                 <option value="">انتخاب کنید</option>
@@ -72,7 +77,8 @@
             <div class="col-md-12 mb-3">
               <label class="form-label">تصویر اصلی</label>
               <VueFileAgent @select="imageLoaded" @update:rawModelValue="changeMainImage"
-                :raw-model-value="oldMainImage" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable sortable />
+                :raw-model-value="oldMainImage" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable
+                sortable />
               <span v-if="errors.main_image" class="text-danger">{{ errors.main_image[0] }}</span>
             </div>
 
@@ -125,7 +131,7 @@ let loading = ref(false);
 
 let mainImageDeleted = ref(false);
 const form = ref({
-  title: '', images: [], description: '', categories: "", technologies: "", main_image: "",
+  title: '', slug: '', images: [], description: '', categories: "", technologies: "", main_image: "",
   meta_title: '', meta_description: '', status: '',
 })
 let firstInit = ref(true);
@@ -159,12 +165,13 @@ async function loadPortfolio() {
   portfolio.value = res.data.data
   Object.assign(form.value, {
     title: portfolio.value.title,
+    slug: portfolio.value.slug,
     description: portfolio.value.description,
     categories: portfolio.value.categories.map(c => c.id),
     technologies: portfolio.value.technologies.map(c => c.id),
     meta_title: portfolio.value.meta_title,
     meta_description: portfolio.value.meta_description,
-    status:Number( portfolio.value.status),
+    status: Number(portfolio.value.status),
   })
   backupImages.value = portfolio.value.images;
 

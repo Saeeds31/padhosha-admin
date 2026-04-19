@@ -279,6 +279,21 @@ const routes = [
   },
 
   {
+    path: "/employers/list",
+    name: "employers-list",
+    component: () => import("@/views/employers/Employer/list.vue"),
+  },
+  {
+    path: "/employers/create",
+    name: "employers-create",
+    component: () => import("@/views/employers/Employer/create.vue"),
+  },
+  {
+    path: "/employers/:id/edit",
+    name: "employers-edit",
+    component: () => import("@/views/employers/Employer/edit.vue"),
+  },
+  {
     path: "/articles/list",
     name: "articles-list",
     component: () => import("@/views/articles/Article/list.vue"),

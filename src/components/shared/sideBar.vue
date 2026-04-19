@@ -156,7 +156,18 @@ const menuItems = ref(
       ],
     },
 
-
+    {
+      name: "کارفرمایان",
+      permissions: ['employer_view'],
+      icon: "bi-people",
+      children: [
+        {
+          name: "کارفرمایان",
+          permissions: ['employer_view'],
+          link: "/employers/list", icon: "bi-list"
+        },
+      ],
+    },
     {
       name: "نمونه کارها",
       permissions: ['portfolio_view', 'portfoliocategory_view', 'technology_view',],
