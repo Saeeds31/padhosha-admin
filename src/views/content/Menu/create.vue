@@ -46,7 +46,7 @@
         <!-- Icon -->
         <b-col cols="12" md="12">
           <b-form-group label="آیکن" label-for="icon">
-            <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp" theme="grid" deletable
+            <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp,.svg" theme="grid" deletable
               sortable />
             <small v-if="errors.icon" class="text-danger">{{ errors.icon[0] }}</small>
           </b-form-group>

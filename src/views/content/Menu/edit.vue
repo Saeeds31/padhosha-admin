@@ -42,7 +42,7 @@
         <b-col cols="12" md="12">
           <b-form-group label="آیکن" label-for="icon">
             <VueFileAgent @update:raw-model-value="imageLoaded" :raw-model-value="oldImage" :maxFiles="1"
-              accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable>
+              accept=".pdf,.jpg,.png,.webp,.svg" theme="grid" deletable sortable>
             </VueFileAgent>
             <small v-if="errors.icon" class="text-danger">{{ errors.icon[0] }}</small>
           </b-form-group>
