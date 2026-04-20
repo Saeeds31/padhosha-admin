@@ -29,6 +29,12 @@
             </b-form-group>
           </b-col>
           <b-col cols="12" md="12">
+            <b-form-group label="لینک مشتری" label-for="link">
+              <b-form-input id="link" v-model="form.link" />
+              <small class="text-danger" v-if="errors.link">{{ errors.link[0] }}</small>
+            </b-form-group>
+          </b-col>
+          <b-col cols="12" md="12">
             <b-form-group label="تصویر" label-for="image">
               <VueFileAgent @update:raw-model-value="imageLoaded" :raw-model-value="oldImage" :maxFiles="1"
                 accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable>
@@ -73,6 +79,7 @@ const form = reactive({
   full_name: '',
   bussines_logo: [],
   bussines_label: '',
+  link: '',
   mobile: '',
   password: ''
 })

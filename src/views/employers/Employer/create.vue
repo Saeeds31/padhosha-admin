@@ -34,6 +34,12 @@
                     </b-form-group>
                 </b-col>
                 <b-col cols="12" md="12">
+                    <b-form-group label="لینک مشتری" label-for="link">
+                        <b-form-input id="link" v-model="form.link" />
+                        <small class="text-danger" v-if="errors.link">{{ errors.link[0] }}</small>
+                    </b-form-group>
+                </b-col>
+                <b-col cols="12" md="12">
                     <b-form-group label="تصویر (URL)">
                         <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp" theme="grid"
                             deletable sortable />
@@ -67,6 +73,7 @@ let loading = ref(false);
 const form = reactive({
     full_name: '',
     bussines_logo: '',
+    link: '',
     bussines_label: '',
     mobile: '',
     password: ''
