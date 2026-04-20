@@ -26,18 +26,28 @@
         </b-col>
 
         <!-- Parent -->
-        <b-col cols="12" md="12">
+        <b-col cols="12" md="6">
           <b-form-group label="منوی والد" label-for="parent">
             <Treeselect :normalizer="normalizer" id="parent" v-model="form.parent_id" :options="menuOptions"
               placeholder="انتخاب منوی والد" />
             <small v-if="errors.parent_id" class="text-danger">{{ errors.parent_id[0] }}</small>
           </b-form-group>
         </b-col>
+        <b-col cols="12" md="6">
+          <b-form-group label="گروه منو" label-for="parent">
+            <select class="form-control" v-model="form.group">
+              <option v-for="(item, index) in groupOption" :key="index" :value="item.id">{{ item.label }}</option>
+            </select>
+            <small v-if="errors.group" class="text-danger">{{ errors.group[0] }}</small>
+
+          </b-form-group>
+        </b-col>
 
         <!-- Icon -->
         <b-col cols="12" md="12">
           <b-form-group label="آیکن" label-for="icon">
-            <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable />
+            <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp" theme="grid" deletable
+              sortable />
             <small v-if="errors.icon" class="text-danger">{{ errors.icon[0] }}</small>
           </b-form-group>
         </b-col>
@@ -63,7 +73,7 @@ import 'vue3-toastify/dist/index.css'
 import Treeselect from 'vue3-treeselect'
 // import the styles
 import 'vue3-treeselect/dist/vue3-treeselect.css'
-import { BForm, BFormGroup, BFormInput, BButton, BCard, BRow, BCol } from 'bootstrap-vue-3'
+import { BForm, BFormGroup, BFormInput, BButton, BRow, BCol } from 'bootstrap-vue-3'
 
 import { useAdmin } from '@/stores/modules/admin';
 const store = useAdmin();
@@ -72,6 +82,7 @@ const form = reactive({
   title: '',
   link: '',
   parent_id: null,
+  group: null,
   icon: '',
 })
 let loading = ref(false);
@@ -85,6 +96,12 @@ const normalizer = (node) => {
     children: node.children
   }
 }
+let groupOption = ref([
+  { id: 'header', label: 'هدر اصلی' },
+  { id: 'portfolios', label: 'نمونه کارها' },
+  { id: 'services', label: 'خدمات' },
+  { id: 'tariff', label: 'تعرفه ها' },
+])
 async function fetchMenu() {
   try {
     const res = await axios.get('/menus')

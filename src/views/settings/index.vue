@@ -30,7 +30,10 @@
                         <input type="checkbox" class="form-check-input" v-model="setting.value" />
                         <label class="form-check-label">فعال</label>
                     </div>
-
+                    <b-col v-else-if="setting.type === 'file'" cols="12" md="12">
+                        <VueFileAgent @select="fileloaded($event, setting.key)" ref="kos" :maxFiles="1"
+                            accept=".pdf,.jpg,.png" theme="grid" deletable sortable />
+                    </b-col
                     <!-- پیشفرض -->
                     <input v-else type="text" class="form-control" v-model="setting.value" />
                 </div>
@@ -68,6 +71,14 @@ const selectedGroup = ref(null);
 const groupOptions = ref([]);
 const settings = ref([]);
 const loading = ref(false);
+function fileloaded(files, key) {
+    if (key && files[0] && files[0].file) {
+        let findedIndex = settings.value.findIndex((set) => set.key == key)
+        if (findedIndex) {
+            settings.value[findedIndex].value = files[0].file
+        }
+    }
+}
 watch(() => selectedGroup.value, () => {
     fetchSettings();
 });
