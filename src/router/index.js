@@ -294,6 +294,38 @@ const routes = [
     component: () => import("@/views/employers/Employer/edit.vue"),
   },
   {
+    path: "/employers/:id/cost",
+    name: "employers-cost",
+    component: () => import("@/views/employers/Employer/cost.vue"),
+  },
+  {
+    path: "/tickets",
+    name: "ticket-list",
+    component: () => import("@/views/ticket/list.vue"),
+  },
+  {
+    path: "/tickets/:id",
+    name: "ticket-detail",
+    component: () => import("@/views/ticket/detail.vue"),
+  },
+  {
+    path: "/tickets/add",
+    name: "ticket-add",
+    component: () => import("@/views/ticket/add.vue"),
+  },
+  {
+    path: "/employers/:id/deposit",
+    name: "employers-deposit-detail",
+    component: () => import("@/views/employers/Employer/deposit.vue"),
+  },
+
+  {
+    path: "/employers/reciepts",
+    name: "employers-deposit",
+    component: () => import("@/views/employers/Employer/deposit.vue"),
+  },
+
+  {
     path: "/articles/list",
     name: "articles-list",
     component: () => import("@/views/articles/Article/list.vue"),

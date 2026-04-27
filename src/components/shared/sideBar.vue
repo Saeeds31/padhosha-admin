@@ -158,13 +158,42 @@ const menuItems = ref(
 
     {
       name: "کارفرمایان",
-      permissions: ['employer_view'],
+      permissions: ['employer_view', 'employer_deposit'],
       icon: "bi-people",
       children: [
         {
           name: "کارفرمایان",
           permissions: ['employer_view'],
           link: "/employers/list", icon: "bi-list"
+        },
+        {
+          name: "پرداختی ها",
+          permissions: ['employer_deposit'],
+          link: "/employers/reciepts", icon: "bi-wallet"
+        },
+
+        {
+          name: "تیکت ها",
+          permissions: ['employer_deposit'],
+          link: "/employers/reciepts", icon: "bi-wallet"
+        },
+      ],
+    },
+
+    {
+      name: "تیکت",
+      permissions: ['ticket_view', 'ticket_store'],
+      icon: "bi-ticket",
+      children: [
+        {
+          name: "مشاهده تیکت ها",
+          permissions: ['ticket_view'],
+          link: "/tickets/", icon: "bi-ticket"
+        },
+        {
+          name: "افزودن  تیکت",
+          permissions: ['ticket_store'],
+          link: "/tickets/add", icon: "bi-plus"
         },
       ],
     },

@@ -133,3 +133,6 @@ input.multiselect__input {
   background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
   padding: 1rem !important;
 }
+.fy{
+  font-family: 'yekanbakhbold';
+}

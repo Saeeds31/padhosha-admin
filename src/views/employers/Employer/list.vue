@@ -49,17 +49,29 @@
                     <i class="bi bi-pen"></i>
                     <span> ویرایش</span>
                   </router-link>
-                  <button v-if="checkPermission(['employer_comment'])" class="btn btn-sm btn-dark"
+                  <button v-if="checkPermission(['employer_comment'])" class="btn btn-sm me-2 btn-dark"
                     @click="showModal(employer.user.id)">
                     <i class="bi bi-chat-dots"></i>
                     <span>کامنت </span>
                   </button>
-
-                  <!-- <button v-if="checkPermission(['employer_delete'])" class="btn btn-sm btn-danger"
-                    @click="deleteLogo(employer.id)">
-                    <i class="bi bi-trash3-fill"></i>
-                    <span>حذف</span>
-                  </button> -->
+                  <button v-if="checkPermission(['employer_subscription'])" class="btn  btn-sm"
+                    :class="!employer.subscription ? ' btn-success' : ' btn-primary'"
+                    @click="showSubsModal(employer.id, employer.subscription)">
+                    <i class="bi bi-subscript"></i>
+                    <span>
+                      {{ !employer.subscription ? 'ثبت اشتراک' : 'ویرایش اشتراک' }}
+                    </span>
+                  </button>
+                  <router-link v-if="checkPermission(['employer_cost'])" :to="`/employers/${employer.id}/cost`"
+                    class="btn btn-sm btn-danger me-2">
+                    <i class="bi bi-list-check"></i>
+                    <span> هزینه ها</span>
+                  </router-link>
+                  <router-link v-if="checkPermission(['employer_deposit'])" :to="`/employers/${employer.id}/deposit`"
+                  class="btn btn-sm btn-success me-2">
+                  <i class="bi bi-list-check"></i>
+                  <span> پرداختی ها</span>
+                </router-link>
                 </td>
               </tr>
             </tbody>
@@ -87,6 +99,40 @@
         </span>
       </button>
     </Modal>
+
+    <Modal v-if="subsmodal" id="subsmodal" @closeModal="() => subsmodal = false" title=" اشتراک کارفرما">
+      <b-row>
+        <b-col cols="12" md="12">
+          <b-form-group label="شروع همکاری" label-for="content">
+            <date-picker class="ms-4" display-format="jYYYY/jMM/jDD" placeholder="از تاریخ" format="YYYY-MM-DD"
+              v-model="form.start_date"></date-picker>
+          </b-form-group>
+
+          <b-form-group label="انقضاء پشتیبانی" label-for="content">
+            <date-picker class="ms-4" display-format="jYYYY/jMM/jDD" placeholder="از تاریخ" format="YYYY-MM-DD"
+              v-model="form.expiration_date"></date-picker>
+          </b-form-group>
+
+          <b-form-group label="انتخاب سطح همکاری" label-for="content">
+
+            <select name="" v-model="form.level_type" class="form-control" id="">
+              <option value="silver">نقره ای</option>
+              <option value="gold">طلا</option>
+              <option value="bronze">برنزی</option>
+              <option value="diamond">الماس</option>
+            </select>
+          </b-form-group>
+
+
+        </b-col>
+      </b-row>
+      <button :disabled="loading" @click="saveSubscription()" class=" my-3 btn btn-success">
+        <i class="bi bi-save"></i>
+        <span>
+          ثبت همکاری
+        </span>
+      </button>
+    </Modal>
   </div>
 </template>
 
@@ -103,7 +149,13 @@ const employers = ref({ data: [], meta: null });
 const loading = ref(false);
 let currentUrl = "/employers";
 let commentModal = ref(false);
+let subsmodal = ref(false);
 let selectedUser = ref(null);
+let form = ref({
+  'start_date': null,
+  'expiration_date': null,
+  'level_type': '',
+})
 let content = ref('');
 async function getemployers(url) {
   loading.value = true;
@@ -139,6 +191,41 @@ async function saveComment() {
 function showModal(userId) {
   selectedUser.value = userId;
   commentModal.value = true;
+}
+async function saveSubscription() {
+  const fd = new FormData();
+  for (const key in form.value) {
+    fd.append(key, form.value[key]);
+  }
+  loading.value = true;
+  try {
+    const { data } = await axios.post("/employers-subscription", fd);
+    subsmodal.value = false;
+    Swal.fire("موفق", "با موفقیت انجام شد", "success");
+    getemployers(currentUrl);
+
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
+}
+function showSubsModal(employerID, subscription) {
+  if (subscription) {
+    form.value = {
+      'start_date': subscription.start_date,
+      'expiration_date': subscription.expiration_date,
+      'level_type': subscription.level_type,
+    };
+  } else {
+    form.value = {
+      'start_date': null,
+      'expiration_date': null,
+      'level_type': '',
+    };
+  }
+  form.value.employer_id = employerID;
+  subsmodal.value = true;
 }
 
 const changePage = (page) => {
