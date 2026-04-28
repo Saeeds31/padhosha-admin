@@ -171,12 +171,6 @@ const menuItems = ref(
           permissions: ['employer_deposit'],
           link: "/employers/reciepts", icon: "bi-wallet"
         },
-
-        {
-          name: "تیکت ها",
-          permissions: ['employer_deposit'],
-          link: "/employers/reciepts", icon: "bi-wallet"
-        },
       ],
     },
 

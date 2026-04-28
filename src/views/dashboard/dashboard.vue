@@ -159,8 +159,8 @@ const commentChartOptions = ref({ chart: { id: "comments" }, xaxis: { categories
 
 // دریافت داده از API
 onMounted(async () => {
-    await axios.get("/run/permissions");
-    await axios.get("/run/assign");
+    // await axios.get("/run/permissions");
+    // await axios.get("/run/assign");
 
     const { data } = await axios.get("/dashboard");
     dashboard.value = data.data;
