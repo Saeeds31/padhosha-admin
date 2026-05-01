@@ -70,6 +70,8 @@
           <b-form-group label="نوع هزینه" label-for="content">
             <select name="" v-model="cost.costable_type" class="form-control" id="">
               <option value="Support">قرارداد پشتیبانی</option>
+              <option value="Host">تمدید هاست</option>
+              <option value="Domain">تمدید دامنه</option>
               <option value="Kavengar">کاوه نگار</option>
               <option value="Ticket">تیکت</option>
             </select>

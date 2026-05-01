@@ -2,7 +2,7 @@
     <b-container fluid class="ticket-page py-4">
         <section v-if="mainData">
 
-            <div class="card mb-3">
+            <div v-if="false" class="card mb-3">
                 <div class="card-header">
                     <h3 class=" p-2">
                         <i class="bi bi-person-workspace"></i>
@@ -34,6 +34,37 @@
                                 <span class="mx-2">
 
                                     {{ loading ? 'در حال ذخیره...' : 'ارجاع به کارشناس' }}
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h3 class=" p-2">
+                        <i class="bi bi-person-workspace"></i>
+                        <span>
+                            تغییر وضعیت تیکت
+                        </span>
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form @submit.prevent="changeStatus()" class="row g-3">
+                        <div class="col-md-12">
+                            <label class="form-label">انتخاب وضعیت</label>
+                            <select name="" class="form-control" v-model="status" id="">
+                                <option value="closed">بسته شده</option>
+                                <option value="awaiting_payment">در انتظار پرداخت</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary" :disabled="loading">
+                                <i class="bi bi-save2"></i>
+                                <span class="mx-2">
+
+                                    {{ loading ? 'در حال ذخیره...' : 'تغییر وضعیت' }}
                                 </span>
                             </button>
                         </div>
@@ -166,8 +197,10 @@
                                     <div v-html="msg.message" class="message-content"></div>
 
                                     <div class="attachments mt-2">
-                                        <template v-if="msg.file">
-                                            <b-link :href="fileHandler(msg.file)" target="_blank">
+                                        <template v-if="msg.attachment">
+                                            <b-link :href="fileHandler(msg.attachment)"
+                                                :class="msg.sender_side == 'employer' ? ' text-white' : 'text-muted'"
+                                                target="_blank">
                                                 مشاهده فایل الصاق شده
                                             </b-link>
                                         </template>
@@ -198,8 +231,24 @@ import { onMounted, reactive, ref } from 'vue';
 import Editor from '@/components/shared/editor.vue';
 import Swal from "sweetalert2";
 import { useRoute } from 'vue-router';
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 const route = useRoute();
 const mainData = ref(null);
+let status = ref('');
+let loading = ref(false);
+async function changeStatus() {
+    let fd = new FormData();
+    fd.append('status', status.value)
+    try {
+        let { data } = await axios.post(`/tickets/${route.params.id}/status`, fd);
+        toast.success("وضعیت تیکت با موفقیت تغییر کرد")
+        getTicket();
+    } catch (error) {
+        toast.error(error.response?.data?.message)
+
+    }
+}
 async function getTicket() {
     let { data } = await axios.get(`/tickets/${route.params.id}`);
     mainData.value = data.data;
