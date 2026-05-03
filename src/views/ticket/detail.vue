@@ -2,7 +2,7 @@
     <b-container fluid class="ticket-page py-4">
         <section v-if="mainData">
 
-            <div v-if="false" class="card mb-3">
+            <div class="card mb-3">
                 <div class="card-header">
                     <h3 class=" p-2">
                         <i class="bi bi-person-workspace"></i>
@@ -230,16 +230,36 @@ import axios from 'axios';
 import { onMounted, reactive, ref } from 'vue';
 import Editor from '@/components/shared/editor.vue';
 import Swal from "sweetalert2";
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
 const route = useRoute();
+const router = useRouter();
 const mainData = ref(null);
 let status = ref('');
 let loading = ref(false);
+
+async function sendReferd() {
+    let fd = new FormData();
+    fd.append('user_id', selectedUser.value ? selectedUser.value.id : '')
+    loading.value = true;
+    try {
+        let { data } = await axios.post(`/tickets/${route.params.id}/referd`, fd);
+
+        Swal.fire("موفق", "ارجاع به کارشناس موفقیت آمیز بود", "success");
+        router.push('/tickets');
+
+    } catch (error) {
+        toast.error(error.response?.data?.message)
+    } finally {
+        loading.value = false;
+
+    }
+}
 async function changeStatus() {
     let fd = new FormData();
     fd.append('status', status.value)
+    loading.value = true;
     try {
         let { data } = await axios.post(`/tickets/${route.params.id}/status`, fd);
         toast.success("وضعیت تیکت با موفقیت تغییر کرد")
@@ -247,6 +267,8 @@ async function changeStatus() {
     } catch (error) {
         toast.error(error.response?.data?.message)
 
+    } finally {
+        loading.value = false;
     }
 }
 async function getTicket() {
@@ -262,7 +284,7 @@ const loadUsers = async (searchQuery) => {
     }
     abortController = new AbortController();
     try {
-        const { data } = await axios.get('/users?search=' + searchQuery ?? '', {
+        const { data } = await axios.get('/supporter?search=' + searchQuery ?? '', {
             signal: abortController.signal,
         })
         const ops = data.data.map(u => ({ id: u.id, label: `${u.full_name} (${u.mobile})` }))
@@ -291,6 +313,7 @@ function fileHandler(path) {
     return window.baseImageAddress + path
 
 }
+
 const translater = (status) => {
     switch (status) {
         case 'answered': return 'پاسخ داده شده';
