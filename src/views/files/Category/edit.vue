@@ -15,8 +15,14 @@
             <small v-if="errors.title" class="text-danger">{{ errors.title[0] }}</small>
           </b-form-group>
         </b-col>
-        <!-- Icon -->
         <b-col cols="12" md="6">
+          <b-form-group label="عنوان" label-for="title">
+            <b-form-input id="title" v-model="form.title" />
+            <small v-if="errors.title" class="text-danger">{{ errors.title[0] }}</small>
+          </b-form-group>
+        </b-col>
+        <!-- Icon -->
+        <b-col cols="12" md="12">
           <b-form-group label="آیکن" label-for="icon">
             <VueFileAgent @update:raw-model-value="imageLoaded1" :raw-model-value="oldImage1" :maxFiles="1"
               accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable />
@@ -69,6 +75,7 @@ const route = useRoute();
 let oldImage1 = ref([])
 const form = reactive({
   title: '',
+  slug: '',
   icon: null,
   meta_title: '',
   meta_description: '',

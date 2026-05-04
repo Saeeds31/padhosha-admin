@@ -16,9 +16,14 @@
           </b-form-group>
         </b-col>
 
-
-        <!-- Icon -->
         <b-col cols="12" md="6">
+          <b-form-group label="slug" label-for="slug">
+            <b-form-input id="slug" v-model="form.slug" />
+            <small v-if="errors.slug" class="text-danger">{{ errors.slug[0] }}</small>
+          </b-form-group>
+        </b-col>
+        <!-- Icon -->
+        <b-col cols="12" md="12">
           <b-form-group label="آیکن" label-for="icon">
             <VueFileAgent @select="imageLoaded1" :maxFiles="1" accept=".pdf,.jpg,.png,.webp" theme="grid" deletable
               sortable />
@@ -71,6 +76,7 @@ let loading = ref(false);
 
 const form = reactive({
   title: '',
+  slug: '',
   icon: null,
   meta_title: '',
   meta_description: '',
