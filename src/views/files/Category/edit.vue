@@ -16,9 +16,9 @@
           </b-form-group>
         </b-col>
         <b-col cols="12" md="6">
-          <b-form-group label="عنوان" label-for="title">
-            <b-form-input id="title" v-model="form.title" />
-            <small v-if="errors.title" class="text-danger">{{ errors.title[0] }}</small>
+          <b-form-group label="slug" label-for="slug">
+            <b-form-input id="slug" v-model="form.slug" />
+            <small v-if="errors.slug" class="text-danger">{{ errors.slug[0] }}</small>
           </b-form-group>
         </b-col>
         <!-- Icon -->
