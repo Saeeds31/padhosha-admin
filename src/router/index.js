@@ -316,13 +316,18 @@ const routes = [
   {
     path: "/employers/:id/deposit",
     name: "employers-deposit-detail",
-    component: () => import("@/views/employers/Employer/deposit.vue"),
+    component: () => import("@/views/employers/Payment/deposit.vue"),
   },
 
   {
     path: "/employers/reciepts",
     name: "employers-deposit",
-    component: () => import("@/views/employers/Employer/deposit.vue"),
+    component: () => import("@/views/employers/Payment/deposit.vue"),
+  },
+  {
+    path: "/employers/reciepts/add",
+    name: "employers-reciepts-add",
+    component: () => import("@/views/employers/Payment/add.vue"),
   },
 
   {

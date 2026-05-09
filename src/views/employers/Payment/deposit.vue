@@ -1,11 +1,13 @@
 <template>
   <div class="container mt-4" v-if="checkPermission(['employer_deposit'])">
-
     <div v-if="mainData" class="card mb-2">
       <div class="card-header d-flex justify-content-between align-items-center mb-3">
         <h3>اطلاعات پرداختی
           {{ employer ? `- ${employer.bussines_label} (${employer.user.full_name})` : '' }}
         </h3>
+        <router-link to="/employers/reciepts/add"  class="btn btn-success">
+          <i class="bi bi-plus-circle-fill me-2"></i> افزودن رسید مشتری
+        </router-link>
       </div>
       <div class="card-body">
         <form>
@@ -57,6 +59,7 @@
             <thead>
               <tr>
                 <th>شناسه رسید</th>
+                <th>کارفرما</th>
                 <th>عنوان</th>
                 <th>قیمت</th>
                 <th>توضیحات</th>
@@ -68,6 +71,7 @@
             <tbody>
               <tr v-for="(item, index) in mainData.data.data" :key="index">
                 <td>{{ item.id }}</td>
+                <td>{{ item.employer?.bussines_label }}</td>
                 <td>{{ item.title }}</td>
                 <td>{{ formatCurrency(item.amount) }} تومان</td>
                 <td>{{ item.description }}</td>

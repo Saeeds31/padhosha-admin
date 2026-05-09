@@ -1,6 +1,6 @@
 <template>
     <div id="ticket-page" class="container mt-4">
-        <b-card title="ثبت تیکت جدید" class="mt-3  shadow-sm">
+        <b-card title="ثبت رسید جدید" class="mt-3  shadow-sm">
 
             <b-form @submit.prevent="handleSubmit">
                 <div class="col-md-12">
@@ -20,14 +20,24 @@
                     <small class="text-danger" v-if="errors.employer_id">{{ errors.employer_id[0] }}</small>
 
                 </div>
-                <b-form-group label="موضوع تیکت" label-for="subject">
-                    <b-form-input id="subject" v-model="ticket.title" placeholder="موضوع را وارد کنید" />
+                <b-form-group label="عنوان رسید" label-for="subject">
+                    <b-form-input id="subject" v-model="newReceipt.title" placeholder="عنوان را وارد کنید" />
                     <small class="text-danger" v-if="errors.title">{{ errors.title[0] }}</small>
                 </b-form-group>
 
+                <div class="mb-3">
+                    <label for="receipt-amount" class="form-label">
+                        تومان ({{ Number(newReceipt.amount).toLocaleString('fa') }})
+                    </label>
+                    <input placeholder="مبلغ واریزی" type="number" class="form-control" id="receipt-amount"
+                        v-model="newReceipt.amount" required>
+                    <small class="text-danger" v-if="errors.amount">{{ errors.amount[0] }}</small>
+                </div>
                 <!-- توضیحات -->
                 <b-form-group label="توضیحات">
-                    <Editor v-model="ticket.description" rows="5" placeholder="توضیحات خود را بنویسید..." />
+                    <textarea class="form-control" v-model="newReceipt.description" rows="5"
+                        placeholder="توضیحات خود را بنویسید...">
+    </textarea>
                     <small class="text-danger" v-if="errors.description">{{ errors.description[0] }}</small>
                 </b-form-group>
 
@@ -35,23 +45,11 @@
                 <b-form-group label="فایل پیوست">
                     <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp" theme="grid"
                         deletable sortable />
-                    <small class="text-danger" v-if="errors.file">{{ errors.file[0] }}</small>
-                </b-form-group>
-
-                <!-- ضبط صوت -->
-                <b-form-group v-if="false" label="ضبط وویس (اختیاری)">
-                    <div class="d-flex align-items-center gap-2">
-                        <b-button variant="outline-primary" @click="toggleRecording">
-                            <span v-if="!isRecording">🎙️ شروع ضبط</span>
-                            <span v-else>⏹️ توقف ضبط</span>
-                        </b-button>
-
-                        <audio v-if="audioUrl" :src="audioUrl" controls class="ms-2"></audio>
-                    </div>
+                    <small class="text-danger" v-if="errors.image">{{ errors.image[0] }}</small>
                 </b-form-group>
 
                 <!-- دکمه ارسال -->
-                <b-button type="submit" :disabled="loader" variant="success">ارسال تیکت</b-button>
+                <b-button type="submit" :disabled="loader" variant="success">ارسال رسید</b-button>
             </b-form>
         </b-card>
     </div>
@@ -67,11 +65,11 @@ import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
 const router = useRouter();
 let loader = ref(false);
-const ticket = ref({
+const newReceipt = ref({
     title: '',
     description: '',
-    file: null,
-    audio: null
+    amount: '',
+    image: ''
 })
 const selectedEmployer = ref(null)
 const options = ref([]);
@@ -82,7 +80,7 @@ let audioChunks = []
 const isRecording = ref(false)
 const audioUrl = ref(null)
 function imageLoaded(files) {
-    form.file = files[0].file
+    newReceipt.value.image = files[0].file
 }
 // شروع یا توقف ضبط صوت
 const toggleRecording = async () => {
@@ -97,7 +95,7 @@ const toggleRecording = async () => {
             }
             mediaRecorder.onstop = () => {
                 const blob = new Blob(audioChunks, { type: 'audio/webm' })
-                ticket.value.audio = blob
+                newReceipt.value.audio = blob
                 audioUrl.value = URL.createObjectURL(blob)
             }
 
@@ -134,16 +132,17 @@ const loadEmployer = async (searchQuery) => {
 const handleSubmit = async () => {
     // اینجا می‌تونی دیتا رو به API ارسال کنی (FormData مناسب برای فایل‌ها)
     const formData = new FormData()
-    formData.append('title', ticket.value.title)
-    formData.append('description', ticket.value.description)
+    formData.append('title', newReceipt.value?.title);
+    formData.append('amount', newReceipt.value?.amount);
+    formData.append('description', newReceipt.value?.description);
+    formData.append('image', newReceipt.value?.image);
     formData.append('employer_id', selectedEmployer.value?.id)
-    formData.append('file', ticket.value.file ?? '')
-    formData.append('audio', ticket.value.audio ?? '')
+
     try {
         loader.value = true;
-        let { data } = await axios.post('tickets', formData);
+        let { data } = await axios.post('employers-receipt', formData);
         Swal.fire("موفق", "پیغام شما با موفقیت ثبت شد", "success");
-        router.push('/tickets')
+        router.push('/employers/reciepts')
     } catch (err) {
         if (err.response && err.response.status === 422) {
             Object.assign(errors, err.response.data.errors)
