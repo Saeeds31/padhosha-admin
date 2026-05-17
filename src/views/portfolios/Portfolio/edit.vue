@@ -81,8 +81,20 @@
                 sortable />
               <span v-if="errors.main_image" class="text-danger">{{ errors.main_image[0] }}</span>
             </div>
-
-
+            <div class="col-md-6 mb-3">
+              <label class="form-label">تصویر صفحه اصلی حالت دسکتاپ</label>
+              <VueFileAgent @select="imageLoaded1" @update:rawModelValue="changeMainImage1"
+                :raw-model-value="oldMainImage1" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable
+                sortable />
+              <span v-if="errors.home_image_desktop" class="text-danger">{{ errors.home_image_desktop[0] }}</span>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">تصویر صفحه اصلی حالت موبایل</label>
+              <VueFileAgent @select="imageLoaded2" @update:rawModelValue="changeMainImage2"
+                :raw-model-value="oldMainImage2" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable
+                sortable />
+              <span v-if="errors.home_image_mobile" class="text-danger">{{ errors.home_image_mobile[0] }}</span>
+            </div>
           </div>
         </div>
         <div class="metaBox row border-box g-3">
@@ -130,14 +142,18 @@ const portfolio = ref(null)
 let loading = ref(false);
 
 let mainImageDeleted = ref(false);
+let mainImageDeleted1 = ref(false);
+let mainImageDeleted2 = ref(false);
 const form = ref({
-  title: '', slug: '', images: [], description: '', categories: "", technologies: "", main_image: "",
+  title: '', link: '', slug: '', images: [], description: '', categories: "", technologies: "", main_image: "", home_image_desktop: "", home_image_mobile: "",
   meta_title: '', meta_description: '', status: '',
 })
 let firstInit = ref(true);
 let deleted_images = ref([]);
 let backupImages = ref([])
 let oldMainImage = ref([])
+let oldMainImage1 = ref([])
+let oldMainImage2 = ref([])
 
 let oldImages = ref([])
 const errors = ref({})
@@ -165,6 +181,7 @@ async function loadPortfolio() {
   portfolio.value = res.data.data
   Object.assign(form.value, {
     title: portfolio.value.title,
+    link: portfolio.value.link,
     slug: portfolio.value.slug,
     description: portfolio.value.description,
     categories: portfolio.value.categories.map(c => c.id),
@@ -185,6 +202,26 @@ async function loadPortfolio() {
         url: `${baseImageAddress}${portfolio.value.main_image}`,
       }];
   }
+  if (portfolio.value.home_image_desktop) {
+    oldMainImage1.value =
+      [{
+        name: portfolio.value.home_image_desktop.split('/').pop(),
+        size: 0,
+        type: 'image/jpeg',
+        ext: portfolio.value.home_image_desktop.split('.').pop(),
+        url: `${baseImageAddress}${portfolio.value.home_image_desktop}`,
+      }];
+  }
+  if (portfolio.value.home_image_mobile) {
+    oldMainImage2.value =
+      [{
+        name: portfolio.value.home_image_mobile.split('/').pop(),
+        size: 0,
+        type: 'image/jpeg',
+        ext: portfolio.value.home_image_mobile.split('.').pop(),
+        url: `${baseImageAddress}${portfolio.value.home_image_mobile}`,
+      }];
+  }
   if (portfolio.value.images && portfolio.value.images.length) {
     let images = [];
     portfolio.value.images.forEach((img) => {
@@ -203,6 +240,8 @@ async function loadPortfolio() {
   }
 }
 function imageLoaded(files) { form.value.main_image = files[0].file }
+function imageLoaded1(files) { form.value.home_image_desktop = files[0].file }
+function imageLoaded2(files) { form.value.home_image_mobile = files[0].file }
 function imagesLoaded(files) {
   form.value.images = files.map(f => f.file)
 }
@@ -222,6 +261,16 @@ function changeMainImage() {
     mainImageDeleted.value = true;
   }
 }
+function changeMainImage1() {
+  if (!mainImageDeleted1.value) {
+    mainImageDeleted1.value = true;
+  }
+}
+function changeMainImage2() {
+  if (!mainImageDeleted1.value) {
+    mainImageDeleted1.value = true;
+  }
+}
 async function submitData() {
   errors.value = {}
   loading.value = true;
@@ -239,6 +288,24 @@ async function submitData() {
           }
         } else {
           formData.append(key, product.value.main_image)
+        }
+      }
+      else if (key == "home_image_desktop") {
+        if (mainImageDeleted1.value) {
+          if (form.value.home_image_desktop) {
+            formData.append(key, form.value.home_image_desktop)
+          }
+        } else {
+          formData.append(key, product.value.home_image_desktop)
+        }
+      }
+      else if (key == "home_image_mobile") {
+        if (mainImageDeleted2.value) {
+          if (form.value.home_image_mobile) {
+            formData.append(key, form.value.home_image_mobile)
+          }
+        } else {
+          formData.append(key, product.value.home_image_mobile)
         }
       }
       else if (key != "categories" && key != "technologies" && form.value[key]) {

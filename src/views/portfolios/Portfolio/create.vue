@@ -67,6 +67,19 @@
                 sortable />
               <span v-if="errors.main_image" class="text-danger">{{ errors.main_image[0] }}</span>
             </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">تصویر صفحه اصلی حالت دسکتاپ</label>
+              <VueFileAgent @select="imageLoaded1" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable
+                sortable />
+              <span v-if="errors.home_image_desktop" class="text-danger">{{ errors.home_image_desktop[0] }}</span>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">تصویر صفحه اصلی حالت موبایل</label>
+
+              <VueFileAgent @select="imageLoaded2" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable
+                sortable />
+              <span v-if="errors.home_image_mobile" class="text-danger">{{ errors.home_image_mobile[0] }}</span>
+            </div>
           </div>
         </div>
 
@@ -113,12 +126,18 @@ const portfolio = ref(null)
 function imageLoaded(files) {
   form.value.main_image = files[0].file
 }
+function imageLoaded1(files) {
+  form.value.home_image_desktop = files[0].file
+}
+function imageLoaded2(files) {
+  form.value.home_image_mobile = files[0].file
+}
 let loading = ref(false);
 function imagesLoaded(files) {
   form.value.images = files.map((file) => file.file)
 }
 const form = ref({
-  title: '', link: '', slug: '', images: [], description: '', categories: [], technologies: [], main_image: "",
+  title: '', link: '', slug: '', images: [], description: '', categories: [], technologies: [], main_image: "",home_image_desktop:"",home_image_mobile:"",
   meta_title: '', meta_description: '', status: ''
 })
 const errors = ref({})
