@@ -67,13 +67,13 @@
                 sortable />
               <span v-if="errors.main_image" class="text-danger">{{ errors.main_image[0] }}</span>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
               <label class="form-label">تصویر صفحه اصلی حالت دسکتاپ</label>
               <VueFileAgent @select="imageLoaded1" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable
                 sortable />
               <span v-if="errors.home_image_desktop" class="text-danger">{{ errors.home_image_desktop[0] }}</span>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
               <label class="form-label">تصویر صفحه اصلی حالت موبایل</label>
 
               <VueFileAgent @select="imageLoaded2" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable
