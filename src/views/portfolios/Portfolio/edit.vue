@@ -280,14 +280,13 @@ async function submitData() {
       if (key === 'images') {
         form.value.images.forEach(img => formData.append("images[]", img))
       }
-
       else if (key == "main_image") {
         if (mainImageDeleted.value) {
           if (form.value.main_image) {
             formData.append(key, form.value.main_image)
           }
         } else {
-          formData.append(key, product.value.main_image)
+          formData.append(key, portfolio.value.main_image)
         }
       }
       else if (key == "home_image_desktop") {
@@ -296,7 +295,7 @@ async function submitData() {
             formData.append(key, form.value.home_image_desktop)
           }
         } else {
-          formData.append(key, product.value.home_image_desktop)
+          formData.append(key, portfolio.value.home_image_desktop)
         }
       }
       else if (key == "home_image_mobile") {
@@ -305,7 +304,7 @@ async function submitData() {
             formData.append(key, form.value.home_image_mobile)
           }
         } else {
-          formData.append(key, product.value.home_image_mobile)
+          formData.append(key, portfolio.value.home_image_mobile)
         }
       }
       else if (key != "categories" && key != "technologies" && form.value[key]) {
