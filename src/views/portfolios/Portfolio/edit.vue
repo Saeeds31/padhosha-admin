@@ -267,8 +267,8 @@ function changeMainImage1() {
   }
 }
 function changeMainImage2() {
-  if (!mainImageDeleted1.value) {
-    mainImageDeleted1.value = true;
+  if (!mainImageDeleted2.value) {
+    mainImageDeleted2.value = true;
   }
 }
 async function submitData() {
@@ -323,6 +323,8 @@ async function submitData() {
     portfolio.value = res.data
     toast.success('نمونه کار با موفقیت بروزرسانی شد!')
   } catch (e) {
+    console.log(e);
+    
     if (e.response?.data?.errors) errors.value.step1 = e.response.data.errors
     toast.error('خطا در ذخیره نمونه کار')
   } finally {
