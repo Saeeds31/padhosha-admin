@@ -1,5 +1,5 @@
 <template>
-  <div class="product-edit container py-4" v-if="checkPermission(['product_update'])">
+  <div class="product-edit container py-4" v-if="checkPermission(['portfolio_update'])">
     <div class="bg-gray">
       <h3>
         <i class="bi bi-info"></i>
