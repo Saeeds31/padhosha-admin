@@ -23,7 +23,7 @@
             </div>
 
             <div class="col-md-6 mb-3">
-              <label class="form-label">تکنولوژی ها</label>
+              <label class="form-label">تکنولوژی ها</label> 
               <Treeselect v-if="form.technologies" v-model="form.technologies" :multiple="true"
                 :options="technologyOptions" :normalizer="normalizer" />
               <span v-if="errors.technologies" class="text-danger">{{ errors.technologies[0] }}</span>
