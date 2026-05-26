@@ -310,7 +310,6 @@ const menuItems = ref(
         }
       ]
     },
-
     {
       name: "دیدگاه‌ها",
       permissions: ['comment_products', 'comment_blogs'],
@@ -394,6 +393,12 @@ const menuItems = ref(
           link: "/orders", icon: "bi-list-check"
         },
       ],
+    },
+
+    {
+      name: "تماس با ما",
+      permissions: ['contact_view'],
+      link: "/contacts", icon: "bi-envelope-paper"
     },
     {
       name: "تنظیمات",

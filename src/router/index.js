@@ -329,7 +329,13 @@ const routes = [
     name: "employers-reciepts-add",
     component: () => import("@/views/employers/Payment/add.vue"),
   },
-
+  
+  {
+    path: "/contacts",
+    name: "contacts",
+    component: () => import("@/views/contacts/list.vue"),
+  },
+  
   {
     path: "/articles/list",
     name: "articles-list",
