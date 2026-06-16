@@ -46,7 +46,7 @@
                 <!-- Image -->
                 <b-col cols="12" md="12">
                     <b-form-group label="تصویر (URL)">
-                        <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp" theme="grid" deletable
+                        <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".gif,.jpg,.png,.webp" theme="grid" deletable
                             sortable />
                         <small class="text-danger" v-if="errors.image">{{ errors.image[0] }}</small>
                     </b-form-group>

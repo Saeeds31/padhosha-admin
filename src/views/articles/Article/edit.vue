@@ -38,7 +38,7 @@
           <b-col cols="12" md="12">
             <b-form-group label="تصویر" label-for="image">
               <VueFileAgent @update:raw-model-value="imageLoaded" :raw-model-value="oldImage" :maxFiles="1"
-                accept=".pdf,.jpg,.png,.webp" theme="grid" deletable sortable>
+                accept=".gif,.jpg,.png,.webp" theme="grid" deletable sortable>
               </VueFileAgent>
 
               <small v-if="errors.image" class="text-danger">{{ errors.image[0] }}</small>
