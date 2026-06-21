@@ -16,8 +16,12 @@
               <input v-model="form.title" type="text" class="form-control" />
               <span v-if="errors.title" class="text-danger">{{ errors.title[0] }}</span>
             </div>
-
-            <div class="col-md-6  mb-3">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">slug فایل</label>
+              <input v-model="form.slug" type="text" class="form-control" />
+              <span v-if="errors.slug" class="text-danger">{{ errors.slug[0] }}</span>
+            </div>
+            <div class="col-md-12  mb-3">
               <label class="form-label">دسته‌بندی‌</label>
               <Treeselect v-if="form.category_id" v-model="form.category_id" :multiple="false"
                 :options="categoryOptions" :normalizer="normalizer" />
@@ -72,7 +76,7 @@ let loading = ref(false);
 let mainImageDeleted = ref(false);
 let mainFileDeleted = ref(false);
 const form = ref({
-  title: '', category_id: "", image: "",
+  title: '', slug: '', category_id: "", image: "",
   file: '',
 })
 let deleted_images = ref([]);

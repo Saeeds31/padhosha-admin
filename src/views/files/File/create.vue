@@ -14,6 +14,11 @@
               <span v-if="errors.title" class="text-danger">{{ errors.title[0] }}</span>
             </div>
             <div class="col-md-6 mb-3">
+              <label class="form-label">slug فایل</label>
+              <input v-model="form.slug" type="text" class="form-control" />
+              <span v-if="errors.slug" class="text-danger">{{ errors.slug[0] }}</span>
+            </div>
+            <div class="col-md-12 mb-3">
               <label class="form-label">دسته‌بندی‌</label>
               <Treeselect v-model="form.category_id" :multiple="false" :options="categoryOptions"
                 :normalizer="normalizer" />
@@ -63,7 +68,7 @@ function imageLoaded1(files) {
 let loading = ref(false);
 
 const form = ref({
-  title: '', category_id: '', file: "", image: "",
+  title: '', slug: '', category_id: '', file: "", image: "",
 })
 const errors = ref({})
 const categoryOptions = ref([])
