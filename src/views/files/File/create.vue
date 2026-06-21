@@ -18,6 +18,16 @@
               <input v-model="form.slug" type="text" class="form-control" />
               <span v-if="errors.slug" class="text-danger">{{ errors.slug[0] }}</span>
             </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">عنوان متا</label>
+              <input v-model="form.meta_title" type="text" class="form-control" />
+              <span v-if="errors.meta_title" class="text-danger">{{ errors.meta_title[0] }}</span>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">توضیحات متا</label>
+              <input v-model="form.meta_description" type="text" class="form-control" />
+              <span v-if="errors.meta_description" class="text-danger">{{ errors.meta_description[0] }}</span>
+            </div>
             <div class="col-md-12 mb-3">
               <label class="form-label">دسته‌بندی‌</label>
               <Treeselect v-model="form.category_id" :multiple="false" :options="categoryOptions"
@@ -26,7 +36,8 @@
             </div>
             <div class="col-md-12 mb-3">
               <label class="form-label">تصویر </label>
-              <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable sortable />
+              <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable
+                sortable />
               <span v-if="errors.image" class="text-danger">{{ errors.image[0] }}</span>
             </div>
             <div class="col-md-12 mb-3">
@@ -68,7 +79,7 @@ function imageLoaded1(files) {
 let loading = ref(false);
 
 const form = ref({
-  title: '', slug: '', category_id: '', file: "", image: "",
+  title: '', meta_title: "", meta_description: "", slug: '', category_id: '', file: "", image: "",
 })
 const errors = ref({})
 const categoryOptions = ref([])
