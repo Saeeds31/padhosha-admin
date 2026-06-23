@@ -33,8 +33,7 @@
                     <b-col v-else-if="setting.type === 'file'" cols="12" md="12">
                         <VueFileAgent @select="fileloaded($event, setting.key)" ref="kos" :maxFiles="1"
                             accept=".pdf,.jpg,.png" theme="grid" deletable sortable />
-                    </b-col
-                    <!-- پیشفرض -->
+                    </b-col <!-- پیشفرض -->
                     <input v-else type="text" class="form-control" v-model="setting.value" />
                 </div>
 

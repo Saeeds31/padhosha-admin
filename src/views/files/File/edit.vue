@@ -51,6 +51,20 @@
                 :maxFiles="1" accept=".jpg,.png,.webp" theme="grid" deletable sortable />
               <span v-if="errors.file" class="text-danger">{{ errors.file[0] }}</span>
             </div>
+            <b-col cols="12">
+              <b-form-group label="توضیحات کامل">
+                <Editor v-model="form.description" />
+                <small class="text-danger" v-if="errors.description">{{ errors.description[0]
+                }}</small>
+              </b-form-group>
+            </b-col>
+            <b-col cols="12">
+              <b-form-group label="آموزش">
+                <Editor v-model="form.education" />
+                <small class="text-danger" v-if="errors.education">{{ errors.education[0]
+                }}</small>
+              </b-form-group>
+            </b-col>
           </div>
 
         </div>
@@ -87,8 +101,7 @@ let loading = ref(false);
 let mainImageDeleted = ref(false);
 let mainFileDeleted = ref(false);
 const form = ref({
-  title: '', meta_title: '', meta_description: '', slug: '', category_id: "", image: "",
-  file: '',
+  title: '', meta_title: "", education: "", description: "", meta_description: "", slug: '', category_id: '', file: "", image: "",
 })
 let deleted_images = ref([]);
 let backupImages = ref([])

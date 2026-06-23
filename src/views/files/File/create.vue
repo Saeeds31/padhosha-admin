@@ -45,6 +45,21 @@
               <VueFileAgent @select="imageLoaded1" :maxFiles="1" theme="grid" deletable sortable />
               <span v-if="errors.file" class="text-danger">{{ errors.file[0] }}</span>
             </div>
+            <b-col cols="12">
+              <b-form-group label="توضیحات کامل">
+                <Editor v-model="form.description" />
+                <small class="text-danger" v-if="errors.description">{{ errors.description[0]
+                }}</small>
+              </b-form-group>
+            </b-col>
+            <b-col cols="12">
+              <b-form-group label="آموزش">
+                <Editor v-model="form.education" />
+                <small class="text-danger" v-if="errors.education">{{ errors.education[0]
+                }}</small>
+              </b-form-group>
+            </b-col>
+
           </div>
         </div>
         <button :disabled="loading" type="submit" class="btn btn-primary mt-3">
@@ -79,7 +94,7 @@ function imageLoaded1(files) {
 let loading = ref(false);
 
 const form = ref({
-  title: '', meta_title: "", meta_description: "", slug: '', category_id: '', file: "", image: "",
+  title: '', meta_title: "", education: "", description: "", meta_description: "", slug: '', category_id: '', file: "", image: "",
 })
 const errors = ref({})
 const categoryOptions = ref([])
