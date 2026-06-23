@@ -86,6 +86,7 @@ import { ref, reactive, watch, onMounted } from 'vue'
 import Treeselect from 'vue3-treeselect'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
 import { toast } from 'vue3-toastify'
+import Editor from '@/components/shared/editor.vue';
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
 import { useAdmin } from '@/stores/modules/admin';

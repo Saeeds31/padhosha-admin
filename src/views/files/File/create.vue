@@ -79,6 +79,7 @@ import { ref, watch, onMounted, reactive, nextTick } from 'vue'
 import Treeselect from 'vue3-treeselect'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
 import axios from 'axios'
+import Editor from '@/components/shared/editor.vue';
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
 import { useAdmin } from '@/stores/modules/admin';
