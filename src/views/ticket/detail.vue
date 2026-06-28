@@ -150,7 +150,7 @@
                         </b-col>
                         <b-col cols="12" md="12">
                             <b-form-group label="فایل پیوست">
-                                <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp"
+                                <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp,.docx"
                                     theme="grid" deletable sortable />
                             </b-form-group>
                         </b-col>
