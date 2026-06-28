@@ -33,7 +33,7 @@
 
                 <!-- فایل پیوست -->
                 <b-form-group label="فایل پیوست">
-                    <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp,.docx" theme="grid"
+                    <VueFileAgent @select="imageLoaded" :maxFiles="1" accept=".pdf,.jpg,.png,.webp,.docx,xlsx" theme="grid"
                         deletable sortable />
                     <small class="text-danger" v-if="errors.file">{{ errors.file[0] }}</small>
                 </b-form-group>
