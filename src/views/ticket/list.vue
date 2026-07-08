@@ -41,6 +41,7 @@
                 <option value="answered">پاسخ داده شده</option>
                 <option value="pending">در انتظار بررسی</option>
                 <option value="awaiting_payment">در انتظار پرداخت</option>
+                <option value="awaiting_response">در انتظار پاسخ کارفرما</option>
                 <option value="referred">ارجاع شده</option>
               </select>
             </div>
@@ -126,6 +127,7 @@ const getStatusBadgeClass = (status) => {
     case 'closed': return 'badge bg-secondary';
     case 'pending': return 'badge bg-info text-dark';
     case 'awaiting_payment': return 'badge bg-danger';
+    case 'awaiting_response': return 'badge bg-danger';
     default: return 'badge bg-primary';
   }
 };
@@ -135,6 +137,7 @@ const translater = (status) => {
     case 'closed': return 'بسته شده';
     case 'pending': return 'در انتظار بررسی';
     case 'awaiting_payment': return 'در انتظار پرداخت';
+    case 'awaiting_response': return 'در انتظار پرداخت';
     case 'referred': return 'ارجاع شده';
   }
 };

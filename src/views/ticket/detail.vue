@@ -57,6 +57,7 @@
                             <select name="" class="form-control" v-model="status" id="">
                                 <option value="closed">بسته شده</option>
                                 <option value="awaiting_payment">در انتظار پرداخت</option>
+                                <option value="awaiting_response">در انتظار پاسخ کارفرما</option>
                             </select>
                         </div>
                         <div class="col-12">
@@ -320,6 +321,7 @@ const translater = (status) => {
         case 'closed': return 'بسته شده';
         case 'pending': return 'در انتظار بررسی';
         case 'awaiting_payment': return 'در انتظار پرداخت';
+        case 'awaiting_response': return 'در انتظار پاسخ کارفرما';
         case 'referred': return 'ارجاع شده';
     }
 };
