@@ -219,7 +219,11 @@ const routes = [
     name: "files-edit",
     component: () => import("@/views/files/File/edit.vue"),
   },
-
+  {
+    path: "/task",
+    name: "task",
+    component: () => import("@/views/Task/task.vue"),
+  },
   {
     path: "/settings",
     name: "settings",

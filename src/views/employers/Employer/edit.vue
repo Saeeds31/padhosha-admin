@@ -22,13 +22,19 @@
               <small class="text-danger" v-if="errors.mobile">{{ errors.mobile[0] }}</small>
             </b-form-group>
           </b-col>
+                    <b-col cols="12" md="6">
+            <b-form-group label="شماره دوم" label-for="second_phone">
+              <b-form-input id="second_phone" v-model="form.second_phone" />
+              <small class="text-danger" v-if="errors.second_phone">{{ errors.second_phone[0] }}</small>
+            </b-form-group>
+          </b-col>
           <b-col cols="12" md="6">
             <b-form-group label="رمز عبور" label-for="password">
               <b-form-input id="password" v-model="form.password" />
               <small class="text-danger" v-if="errors.password">{{ errors.password[0] }}</small>
             </b-form-group>
           </b-col>
-          <b-col cols="12" md="12">
+          <b-col cols="12" md="6">
             <b-form-group label="لینک مشتری" label-for="link">
               <b-form-input id="link" v-model="form.link" />
               <small class="text-danger" v-if="errors.link">{{ errors.link[0] }}</small>
@@ -79,6 +85,7 @@ const form = reactive({
   full_name: '',
   bussines_logo: [],
   bussines_label: '',
+  second_phone:'',
   link: '',
   mobile: '',
   password: ''
@@ -101,6 +108,7 @@ onMounted(async () => {
         }];
     Object.assign(form, res.data.data);
     form.mobile = res.data.data.user.mobile
+    form.second_phone = res.data.data.user.second_phone
     form.full_name = res.data.data.user.full_name
   } catch (err) {
     console.log(err);

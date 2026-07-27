@@ -1,4 +1,3 @@
-
 <template>
   <div id="sidebar">
     <!-- Overlay موبایل -->
@@ -377,6 +376,12 @@ const menuItems = ref(
       ],
     },
 
+    {
+      name: "تسک ها",
+      permissions: ['task_view'],
+      link: "/task",
+      icon: "bi-check2-square"
+    },
     {
       name: "تماس با ما",
       permissions: ['contact_view'],
