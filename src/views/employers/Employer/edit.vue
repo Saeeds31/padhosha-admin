@@ -108,7 +108,7 @@ onMounted(async () => {
         }];
     Object.assign(form, res.data.data);
     form.mobile = res.data.data.user.mobile
-    form.second_phone = res.data.data.user.second_phone
+    form.second_phone = res.data.data.second_phone
     form.full_name = res.data.data.user.full_name
   } catch (err) {
     console.log(err);
