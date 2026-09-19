@@ -227,6 +227,15 @@ async function submitData() {
   margin: 24px auto;
 }
 
+@media (max-width:768px) {
+  .formSetp1 {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 95%;
+    margin: 24px auto;
+  }
+}
+
 .speci,
 .formSetp2 {
   border: 1px solid #e2e2e2;

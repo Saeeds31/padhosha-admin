@@ -45,4 +45,12 @@ div#mainContent {
   min-height: 100vh;
   margin-right: 250px;
 }
+
+@media (max-width:768px) {
+  div#mainContent {
+    margin-right: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+}
 </style>

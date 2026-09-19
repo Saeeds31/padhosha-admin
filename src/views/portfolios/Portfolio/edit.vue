@@ -23,7 +23,7 @@
             </div>
 
             <div class="col-md-6 mb-3">
-              <label class="form-label">تکنولوژی ها</label> 
+              <label class="form-label">تکنولوژی ها</label>
               <Treeselect v-if="form.technologies" v-model="form.technologies" :multiple="true"
                 :options="technologyOptions" :normalizer="normalizer" />
               <span v-if="errors.technologies" class="text-danger">{{ errors.technologies[0] }}</span>
@@ -324,7 +324,7 @@ async function submitData() {
     toast.success('نمونه کار با موفقیت بروزرسانی شد!')
   } catch (e) {
     console.log(e);
-    
+
     if (e.response?.data?.errors) errors.value.step1 = e.response.data.errors
     toast.error('خطا در ذخیره نمونه کار')
   } finally {
@@ -366,6 +366,15 @@ async function submitData() {
   grid-template-columns: 9fr 3fr;
   width: 95%;
   margin: 24px auto;
+}
+
+@media (max-width:768px) {
+  .formSetp1 {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 95%;
+    margin: 24px auto;
+  }
 }
 
 .formSetp2 {

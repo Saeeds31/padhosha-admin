@@ -14,10 +14,10 @@
 
       <div class="menu-items-wrapper">
         <div v-for="item in menuItems" :key="item.name" class="w-100">
-          <b-nav-item v-if="!item.children && checkPermission(item.permissions)" :to="item.link" class="menu-item"
+          <b-nav-item v-if="!item.children && checkPermission(item.permissions)" :to="item.link" @click="mobileOpen=false" class="menu-item"
             :class="{ 'active': isActiveRoute(item.link) }">
             <i :class="item.icon + ' me-2'"></i>
-            <span v-if="mobileOpen || windowWidth < 992">{{ item.name }}</span>
+            <span >{{ item.name }}</span>
           </b-nav-item>
 
           <!-- آیتم با زیرمنو -->
@@ -25,16 +25,16 @@
             <button class="navItem btn w-100 text-start menu-group-btn"
               :class="{ 'has-active-child': hasActiveChild(item) }" @click="toggleSubmenu(item)">
               <i :class="item.icon + ' me-2'"></i>
-              <span v-if="mobileOpen || windowWidth < 992">{{ item.name }}</span>
+              <span >{{ item.name }}</span>
               <i class="ms-auto bi" :class="openSubmenuStates[item.name] ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
             </button>
             <b-collapse v-model="openSubmenuStates[item.name]" class="submenu-wrapper">
               <b-nav vertical>
                 <template v-for="child in item.children" :key="child.name">
-                  <b-nav-item v-if="checkPermission(child.permissions)" :to="child.link" class="submenu-item"
+                  <b-nav-item v-if="checkPermission(child.permissions)" :to="child.link" @click="mobileOpen=false" class="submenu-item"
                     :class="{ 'active': isActiveRoute(child.link) }">
                     <i :class="child.icon + ' me-2'"></i>
-                    <span v-if="mobileOpen || windowWidth < 992">{{ child.name }}</span>
+                    <span >{{ child.name }}</span>
                   </b-nav-item>
                 </template>
               </b-nav>
@@ -618,5 +618,61 @@ a.nav-link span {
 
 a.nav-link {
   color: #cfd8e3 !important;
+}
+
+/* ===== بهبودهای ریسپانسیو اضافه شده ===== */
+@media (max-width: 991.98px) {
+  /* اطمینان از تمام عرض بودن منوها در موبایل */
+  .menu-items-wrapper {
+    padding: 0.5rem 0;
+  }
+
+  .menu-item,
+  .menu-group-btn {
+    padding: 0.75rem 1rem !important;
+    margin: 0.25rem 0.5rem !important;
+    font-size: 0.9375rem !important;
+  }
+
+  .submenu-item {
+    padding: 0.625rem 1rem 0.625rem 0.75rem !important;
+    margin: 0.125rem 0.5rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* دکمه موبایل کمی بزرگ‌تر و خواناتر */
+  .mobile-toggle-btn {
+    padding: 0.625rem 0.875rem;
+    font-size: 1.125rem;
+  }
+}
+
+/* در صفحات بسیار کوچک، سایدبار کمی باریک‌تر */
+@media (max-width: 400px) {
+  .sidebar {
+    width: 240px;
+  }
+
+  .menu-item,
+  .menu-group-btn {
+    padding: 0.625rem 0.875rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  .submenu-item {
+    padding: 0.5rem 0.875rem 0.5rem 0.625rem !important;
+    font-size: 0.8125rem !important;
+  }
+
+  .logo-wrapper img {
+    max-height: 32px;
+  }
+}
+
+/* وقتی سایدبار در دسکتاپ جمع می‌شود (در صورت نیاز) */
+@media (min-width: 992px) {
+  .mobile-toggle-btn {
+    display: none !important;
+  }
 }
 </style>

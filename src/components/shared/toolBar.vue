@@ -2,7 +2,7 @@
   <b-navbar id="mainNavbar" variant="light" class="bg-white border-bottom px-3">
     <b-navbar-brand href="#">Admin Panel</b-navbar-brand>
 
-    <b-navbar-nav class=" d-flex align-items-center gap-2">
+    <b-navbar-nav class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
       <!-- دکمه‌های اضافی -->
 
       <b-button variant="info" @click="router.go(-1)">
@@ -11,7 +11,7 @@
 
       <b-button variant="outline-primary" size="sm" pill class="position-relative" @click="showNotificationModal">
         <i class="bi bi-bell-fill"></i>
-        <b-badge v-if="unseenCount > 0" class=" bg-primary position-absolute top-0 start-100 translate-middle"
+        <b-badge v-if="unseenCount > 0" class="bg-primary position-absolute top-0 start-100 translate-middle"
           style="font-size: 0.65rem; width:24px">
           {{ unseenCount > 99 ? '99+' : unseenCount }}
         </b-badge>
@@ -42,21 +42,21 @@
 
           <div v-for="notif in unseenNotifications" :key="notif.id"
             class="notif-item p-3 border-bottom bg-light bg-opacity-75">
-            <div class=" d-flex">
+            <div class="d-flex flex-column flex-sm-row gap-2 gap-sm-0">
               <div class="flex-shrink-0">
                 <div
                   class="avatar-sm bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-bell-fill text-primary"></i>
                 </div>
               </div>
-              <div class="flex-grow-1 ms-3">
+              <div class="flex-grow-1 ms-sm-3">
                 <h6 class="mb-1 fw-bold text-dark">{{ notif.title }}</h6>
                 <p class="mb-1 small text-muted">{{ notif.message }}</p>
                 <small class="text-primary fw-medium">
                   {{ formatJalaliTimeAgo(notif.created_at) }}
                 </small>
               </div>
-              <div class="align-self-center">
+              <div class="align-self-start align-self-sm-center">
                 <button class="badge bg-danger rounded-pill" @click="markAsSeen(notif)">
                   <span>دیده شد</span>
                   <i class="bi-check"></i>
@@ -155,6 +155,69 @@ const logout = () => {
   delete axios.defaults.headers.common.Authorization
   router.push('/login')
 }
-
-
 </script>
+
+<style scoped>
+/* ===== Navbar ===== */
+#mainNavbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+/* ===== آواتار اعلان ===== */
+.avatar-sm {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+/* ===== آیتم اعلان ===== */
+.notif-item {
+  transition: background 0.15s ease;
+}
+
+.notif-item:hover {
+  background: #f8f9fa !important;
+}
+
+/* ===== موبایل (کمتر از 768px) ===== */
+@media (max-width: 767.98px) {
+  /* نوار بالا */
+  #mainNavbar {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  #mainNavbar .navbar-brand {
+    text-align: center;
+  }
+
+  #mainNavbar .navbar-nav {
+    justify-content: center !important;
+    width: 100%;
+  }
+
+  /* لیست اعلان‌ها */
+  .notification-list {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ===== اسکرول‌بار سفارشی ===== */
+.notification-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.notification-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+</style>
