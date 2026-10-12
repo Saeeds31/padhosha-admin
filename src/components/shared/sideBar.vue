@@ -14,10 +14,10 @@
 
       <div class="menu-items-wrapper">
         <div v-for="item in menuItems" :key="item.name" class="w-100">
-          <b-nav-item v-if="!item.children && checkPermission(item.permissions)" :to="item.link" @click="mobileOpen=false" class="menu-item"
-            :class="{ 'active': isActiveRoute(item.link) }">
+          <b-nav-item v-if="!item.children && checkPermission(item.permissions)" :to="item.link"
+            @click="mobileOpen = false" class="menu-item" :class="{ 'active': isActiveRoute(item.link) }">
             <i :class="item.icon + ' me-2'"></i>
-            <span >{{ item.name }}</span>
+            <span>{{ item.name }}</span>
           </b-nav-item>
 
           <!-- آیتم با زیرمنو -->
@@ -25,16 +25,16 @@
             <button class="navItem btn w-100 text-start menu-group-btn"
               :class="{ 'has-active-child': hasActiveChild(item) }" @click="toggleSubmenu(item)">
               <i :class="item.icon + ' me-2'"></i>
-              <span >{{ item.name }}</span>
+              <span>{{ item.name }}</span>
               <i class="ms-auto bi" :class="openSubmenuStates[item.name] ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
             </button>
             <b-collapse v-model="openSubmenuStates[item.name]" class="submenu-wrapper">
               <b-nav vertical>
                 <template v-for="child in item.children" :key="child.name">
-                  <b-nav-item v-if="checkPermission(child.permissions)" :to="child.link" @click="mobileOpen=false" class="submenu-item"
-                    :class="{ 'active': isActiveRoute(child.link) }">
+                  <b-nav-item v-if="checkPermission(child.permissions)" :to="child.link" @click="mobileOpen = false"
+                    class="submenu-item" :class="{ 'active': isActiveRoute(child.link) }">
                     <i :class="child.icon + ' me-2'"></i>
-                    <span >{{ child.name }}</span>
+                    <span>{{ child.name }}</span>
                   </b-nav-item>
                 </template>
               </b-nav>
@@ -325,6 +325,11 @@ const menuItems = ref(
           name: "لیست مقالات",
           permissions: ['article_view'],
           link: "/articles/list", icon: "bi-file-text"
+        },
+        {
+          name: "لیست تصاویر",
+          permissions: ['article_view'],
+          link: "/articles/images", icon: "bi-image"
         },
       ],
     },
@@ -622,6 +627,7 @@ a.nav-link {
 
 /* ===== بهبودهای ریسپانسیو اضافه شده ===== */
 @media (max-width: 991.98px) {
+
   /* اطمینان از تمام عرض بودن منوها در موبایل */
   .menu-items-wrapper {
     padding: 0.5rem 0;

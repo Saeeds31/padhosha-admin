@@ -1,7 +1,26 @@
 <template>
   <div class="editor-container">
-    <QuillEditor v-model:content="editorContent" content-type="html" theme="snow" :options="editorOptions"
-      @ready="onEditorReady" @update:content="onEditorChange" dir="rtl" class="quill-editor" />
+    <div class="html-input-section">
+      <textarea
+        v-model="htmlInput"
+        placeholder="کد HTML خود را اینجا وارد کنید..."
+        class="html-textarea"
+        dir="ltr"
+      ></textarea>
+      <button @click="insertHtml" type="button" class="insert-btn">درج HTML</button>
+    </div>
+    
+    <QuillEditor
+      ref="quillEditorRef"
+      v-model:content="editorContent"
+      content-type="html"
+      theme="snow"
+      :options="editorOptions"
+      @ready="onEditorReady"
+      @update:content="onEditorChange"
+      dir="rtl"
+      class="quill-editor"
+    />
   </div>
 </template>
 
@@ -12,7 +31,6 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import ImageUploader from 'quill-image-uploader'
 import BlotFormatter from 'quill-blot-formatter'
 import Quill from 'quill'
-import { getCookie } from "../../tools/methods.js";
 
 // ثبت پلاگین‌ها
 Quill.register('modules/imageUploader', ImageUploader)
@@ -27,12 +45,19 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue'])
 
+// رفرنس به ادیتور
+const quillEditorRef = ref(null)
+let quillInstance = null
+
 // مقدار داخلی برای QuillEditor
 const editorContent = ref(props.modelValue)
 
+// ورودی HTML
+const htmlInput = ref('')
+
 // سینک کردن تغییرات با v-model
 watch(editorContent, (newValue) => {
-  emit('update:modelValue', newValue) // آپدیت مقدار به والد
+  emit('update:modelValue', newValue)
 })
 
 // سینک کردن modelValue از والد به ادیتور
@@ -63,12 +88,9 @@ const editorOptions = {
         return new Promise((resolve, reject) => {
           const formData = new FormData()
           formData.append('file', file)
-          fetch('https://api.padhosha.ir/api/v1/admin/upload-image', {
+          fetch('/upload', {
             method: 'POST',
-            body: formData,
-            headers: {
-              'Authorization': `Bearer ${getCookie('token')}`
-            }
+            body: formData
           })
             .then((response) => response.json())
             .then((result) => resolve(result.url))
@@ -76,13 +98,17 @@ const editorOptions = {
         })
       }
     },
-    blotFormatter: {}
+    blotFormatter: {},
+    clipboard: {
+      matchVisual: false
+    }
   },
   placeholder: 'متن خود را اینجا بنویسید...'
 }
 
 // ایونت‌ها
 const onEditorReady = (quill) => {
+  quillInstance = quill
   console.log('ادیتور آماده شد:', quill)
   quill.container.style.direction = 'rtl'
   quill.container.style.textAlign = 'right'
@@ -91,12 +117,117 @@ const onEditorReady = (quill) => {
 const onEditorChange = () => {
   console.log('محتوا تغییر کرد:', editorContent.value)
 }
+
+// تابع درج HTML
+const insertHtml = () => {
+  if (!quillInstance || !htmlInput.value.trim()) return
+  
+  try {
+    // روش 1: استفاده از clipboard
+    const clipboard = quillInstance.getModule('clipboard')
+    const range = quillInstance.getSelection(true)
+    
+    if (range) {
+      clipboard.dangerouslyPasteHTML(range.index, htmlInput.value)
+      quillInstance.setSelection(range.index + htmlInput.value.length, 0)
+    } else {
+      // اگر کرسر جایی نیست، به انتها اضافه کن
+      const length = quillInstance.getLength()
+      clipboard.dangerouslyPasteHTML(length - 1, htmlInput.value)
+    }
+    
+    // پاک کردن textarea بعد از درج
+    htmlInput.value = ''
+    
+    // به‌روزرسانی editorContent
+    editorContent.value = quillInstance.root.innerHTML
+  } catch (error) {
+    console.error('خطا در درج HTML:', error)
+    alert('خطا در درج HTML. لطفاً کد را بررسی کنید.')
+  }
+}
+
+// متد عمومی برای درج HTML از خارج کامپوننت
+const insertHtmlProgrammatically = (html) => {
+  if (!quillInstance) return
+  
+  try {
+    const clipboard = quillInstance.getModule('clipboard')
+    const range = quillInstance.getSelection(true)
+    
+    if (range) {
+      clipboard.dangerouslyPasteHTML(range.index, html)
+    } else {
+      const length = quillInstance.getLength()
+      clipboard.dangerouslyPasteHTML(length - 1, html)
+    }
+    
+    editorContent.value = quillInstance.root.innerHTML
+  } catch (error) {
+    console.error('خطا در درج HTML:', error)
+  }
+}
+
+// متد برای جایگزینی کل محتوا
+const setHtmlContent = (html) => {
+  if (!quillInstance) return
+  
+  quillInstance.root.innerHTML = html
+  editorContent.value = html
+}
+
+// expose کردن متدها برای استفاده از والد
+defineExpose({
+  insertHtml: insertHtmlProgrammatically,
+  setHtmlContent
+})
 </script>
 
 <style scoped>
 .editor-container {
   max-width: 800px;
   margin: 0 auto;
+}
+
+.html-input-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.html-textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  resize: vertical;
+  direction: ltr;
+  text-align: left;
+}
+
+.insert-btn {
+  padding: 8px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Vazir', 'Arial', sans-serif;
+  transition: background-color 0.3s;
+}
+
+.insert-btn:hover {
+  background-color: #45a049;
+}
+
+.insert-btn:active {
+  background-color: #3d8b40;
 }
 
 .quill-editor {

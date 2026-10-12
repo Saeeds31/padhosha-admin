@@ -339,7 +339,11 @@ const routes = [
     name: "contacts",
     component: () => import("@/views/contacts/list.vue"),
   },
-  
+    {
+    path: "/articles/images",
+    name: "articles-images",
+    component: () => import("@/views/articles/imagelib.vue"),
+  },
   {
     path: "/articles/list",
     name: "articles-list",
