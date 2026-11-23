@@ -32,6 +32,28 @@ import ImageUploader from 'quill-image-uploader'
 import BlotFormatter from 'quill-blot-formatter'
 import Quill from 'quill'
 
+// ثبت بلوک اختصاصی برای حفظ کدهای HTML و استایل‌های تک‌خطی
+const BlockEmbed = Quill.import('blots/block/embed')
+
+class RawHtmlBlot extends BlockEmbed {
+  static blotName = 'rawHtml'
+  static tagName = 'div'
+  static className = 'custom-html-block'
+
+  static create(value) {
+    const node = super.create()
+    node.setAttribute('contenteditable', 'false')
+    node.innerHTML = typeof value === 'string' ? value : ''
+    return node
+  }
+
+  static value(node) {
+    return node.innerHTML
+  }
+}
+
+Quill.register(RawHtmlBlot, true)
+
 // ثبت پلاگین‌ها
 Quill.register('modules/imageUploader', ImageUploader)
 Quill.register('modules/blotFormatter', BlotFormatter)
@@ -118,27 +140,20 @@ const onEditorChange = () => {
   console.log('محتوا تغییر کرد:', editorContent.value)
 }
 
-// تابع درج HTML
+// تابع درج HTML با حفظ تگ‌ها و استایل‌های تک‌خطی
 const insertHtml = () => {
   if (!quillInstance || !htmlInput.value.trim()) return
-  
+
   try {
-    // روش 1: استفاده از clipboard
-    const clipboard = quillInstance.getModule('clipboard')
     const range = quillInstance.getSelection(true)
-    
-    if (range) {
-      clipboard.dangerouslyPasteHTML(range.index, htmlInput.value)
-      quillInstance.setSelection(range.index + htmlInput.value.length, 0)
-    } else {
-      // اگر کرسر جایی نیست، به انتها اضافه کن
-      const length = quillInstance.getLength()
-      clipboard.dangerouslyPasteHTML(length - 1, htmlInput.value)
-    }
-    
+    const index = range ? range.index : Math.max(quillInstance.getLength() - 1, 0)
+
+    quillInstance.insertEmbed(index, 'rawHtml', htmlInput.value.trim(), Quill.sources.USER)
+    quillInstance.setSelection(index + 1, 0, Quill.sources.SILENT)
+
     // پاک کردن textarea بعد از درج
     htmlInput.value = ''
-    
+
     // به‌روزرسانی editorContent
     editorContent.value = quillInstance.root.innerHTML
   } catch (error) {
@@ -149,19 +164,15 @@ const insertHtml = () => {
 
 // متد عمومی برای درج HTML از خارج کامپوننت
 const insertHtmlProgrammatically = (html) => {
-  if (!quillInstance) return
-  
+  if (!quillInstance || !html) return
+
   try {
-    const clipboard = quillInstance.getModule('clipboard')
     const range = quillInstance.getSelection(true)
-    
-    if (range) {
-      clipboard.dangerouslyPasteHTML(range.index, html)
-    } else {
-      const length = quillInstance.getLength()
-      clipboard.dangerouslyPasteHTML(length - 1, html)
-    }
-    
+    const index = range ? range.index : Math.max(quillInstance.getLength() - 1, 0)
+
+    quillInstance.insertEmbed(index, 'rawHtml', html, Quill.sources.USER)
+    quillInstance.setSelection(index + 1, 0, Quill.sources.SILENT)
+
     editorContent.value = quillInstance.root.innerHTML
   } catch (error) {
     console.error('خطا در درج HTML:', error)
@@ -171,7 +182,7 @@ const insertHtmlProgrammatically = (html) => {
 // متد برای جایگزینی کل محتوا
 const setHtmlContent = (html) => {
   if (!quillInstance) return
-  
+
   quillInstance.root.innerHTML = html
   editorContent.value = html
 }
